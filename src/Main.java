@@ -1,12 +1,9 @@
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
-
-        ArrayList<String> studentNames = new ArrayList<>();
-        ArrayList<Double> studentGrades = new ArrayList<>();
+        GradeManager manager = new GradeManager();
 
         int choice = 0;
 
@@ -26,47 +23,41 @@ public class Main {
                 System.out.print("Enter student name: ");
                 String name = input.nextLine();
 
-                studentNames.add(name);
-                studentGrades.add(0.0);
+                manager.addStudent(name);
 
                 System.out.println("Student added successfully.");
             } else if (choice == 2) {
                 System.out.print("Enter student number: ");
                 int studentNumber = input.nextInt();
 
-                if (studentNumber >= 1 && studentNumber <= studentNames.size()) {
+                if (studentNumber >= 1 && studentNumber <= manager.getStudents().size()) {
                     System.out.print("Enter grade: ");
                     double grade = input.nextDouble();
 
-                    studentGrades.set(studentNumber - 1, grade);
+                    manager.getStudents().get(studentNumber - 1).setGrade(grade);
 
                     System.out.println("Grade added successfully.");
                 } else {
                     System.out.println("Invalid student number.");
                 }
             } else if (choice == 3) {
-                if (studentGrades.size() == 0) {
+                if (manager.getStudents().isEmpty()) {
                     System.out.println("No students available.");
                 } else {
-                    double total = 0;
-
-                    for (double grade : studentGrades) {
-                        total += grade;
-                    }
-
-                    double average = total / studentGrades.size();
-
-                    System.out.println("Average grade: " + average);
+                    System.out.println("Average grade: " + manager.calculateAverage());
                 }
             } else if (choice == 4) {
-                if (studentNames.size() == 0) {
+                if (manager.getStudents().isEmpty()) {
                     System.out.println("No students available.");
                 } else {
                     System.out.println("\nStudent List:");
 
-                    for (int i = 0; i < studentNames.size(); i++) {
-                        System.out.println((i + 1) + ". " + studentNames.get(i)
-                                + " - Grade: " + studentGrades.get(i));
+                    for (int i = 0; i < manager.getStudents().size(); i++) {
+                        Student student = manager.getStudents().get(i);
+
+                        System.out.println((i + 1) + ". " + student.getName()
+                                + " - Grade: " + student.getGrade()
+                                + " - Letter Grade: " + student.getLetterGrade());
                     }
                 }
             } else if (choice == 5) {
