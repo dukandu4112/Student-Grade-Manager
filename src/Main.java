@@ -7,14 +7,15 @@ public class Main {
 
         int choice = 0;
 
-        while (choice != 6) {
+        while (choice != 7)
             System.out.println("\n===== Student Grade Manager =====");
             System.out.println("1. Add student");
             System.out.println("2. Add grade");
             System.out.println("3. Show average grade");
             System.out.println("4. Show all students");
-            System.out.println("5. Edit student grade");
-            System.out.println("6. Exit");
+           System.out.println("5. Edit student grade");
+           System.out.println("6. Delete student");
+           System.out.println("7. Exit");
             System.out.print("Enter your choice: ");
 
             choice = input.nextInt();
@@ -76,7 +77,26 @@ public class Main {
         System.out.println("Invalid student number.");
     }
 } else if (choice == 6) {
+    System.out.print("Enter student number to delete: ");
+    int studentNumber = input.nextInt();
+
+    if (studentNumber >= 1 && studentNumber <= manager.getStudents().size()) {
+
+        manager.getStudents().remove(studentNumber - 1);
+
+        System.out.println("Student deleted successfully.");
+
+    } else {
+
+        System.out.println("Invalid student number.");
+
+    }
+
+} else if (choice == 7) {
+
     System.out.println("Goodbye!");
+
+}
             } else {
                 System.out.println("Invalid choice. Try again.");
             }
