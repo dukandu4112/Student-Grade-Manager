@@ -32,4 +32,19 @@ public class GradeManager {
 
         return total / students.size();
     }
+    public void displayAllStudents() {
+    if (students.isEmpty()) {
+        System.out.println("No students available.");
+    } else {
+        System.out.println("\nStudent List:");
+
+        for (int i = 0; i < students.size(); i++) {
+            Student student = students.get(i);
+
+            System.out.println((i + 1) + ". " + student.getName()
+                    + " - Grade: " + student.getGrade()
+                    + " - Letter Grade: " + student.getLetterGrade());
+        }
+    }
+  } 
 }

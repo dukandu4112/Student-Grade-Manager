@@ -46,19 +46,7 @@ public class Main {
                     }
                 }
 
-                case 4 -> {
-                    if (manager.getStudents().isEmpty()) {
-                        System.out.println("No students available.");
-                    } else {
-                        System.out.println("\nStudent List:");
-                        for (int i = 0; i < manager.getStudents().size(); i++) {
-                            Student student = manager.getStudents().get(i);
-                            System.out.println((i + 1) + ". " + student.getName()
-                                    + " - Grade: " + student.getGrade()
-                                    + " - Letter Grade: " + student.getLetterGrade());
-                        }
-                    }
-                }
+                case 4 -> manager.displayAllStudents();
 
                 case 5 -> {
                     System.out.print("Enter student number: ");
