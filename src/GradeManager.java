@@ -11,6 +11,9 @@ public class GradeManager {
     public void addStudent(String name) {
         students.add(new Student(name));
     }
+    public void addStudent(Student student) {
+    students.add(student);
+    }
 
     public ArrayList<Student> getStudents() {
         return students;
