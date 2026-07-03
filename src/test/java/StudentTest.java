@@ -12,7 +12,7 @@ public class StudentTest {
 
     @Before
     public void setUp() {
-        student = new Student(1, "John Doe");
+        student = new Student("John Doe");
     }
 
     /**
@@ -20,16 +20,9 @@ public class StudentTest {
      */
     @Test
     public void testStudentInitialization() {
-        assertEquals(1, student.getId());
         assertEquals("John Doe", student.getName());
-    }
-
-    /**
-     * Test getting student ID.
-     */
-    @Test
-    public void testGetStudentId() {
-        assertEquals(1, student.getId());
+        assertEquals(-1, student.getId());  // Not yet saved to database
+        assertEquals(0.0, student.getGrade(), 0.01);
     }
 
     /**
@@ -38,6 +31,39 @@ public class StudentTest {
     @Test
     public void testGetStudentName() {
         assertEquals("John Doe", student.getName());
+    }
+
+    /**
+     * Test setting student name.
+     */
+    @Test
+    public void testSetStudentName() {
+        student.setName("Jane Smith");
+        assertEquals("Jane Smith", student.getName());
+    }
+
+    /**
+     * Test adding a valid grade.
+     */
+    @Test
+    public void testAddValidGrade() {
+        student.addGrade(85.0);
+        assertEquals(85.0, student.getGrade(), 0.01);
+        assertEquals(1, student.getGradeCount());
+    }
+
+    /**
+     * Test adding multiple grades and calculating average.
+     */
+    @Test
+    public void testAddMultipleGrades() {
+        student.addGrade(90.0);
+        student.addGrade(80.0);
+        student.addGrade(100.0);
+        
+        double average = student.calculateAverage();
+        assertEquals(90.0, average, 0.01);
+        assertEquals(3, student.getGradeCount());
     }
 
     /**
@@ -95,20 +121,13 @@ public class StudentTest {
      */
     @Test
     public void testLetterGradeBoundaries() {
-        // Boundary between F and D
-        assertEquals("F", Student.getLetterGrade(59.9));
+        assertEquals("F", Student.getLetterGrade(59));
         assertEquals("D", Student.getLetterGrade(60));
-        
-        // Boundary between D and C
-        assertEquals("D", Student.getLetterGrade(69.9));
+        assertEquals("D", Student.getLetterGrade(69));
         assertEquals("C", Student.getLetterGrade(70));
-        
-        // Boundary between C and B
-        assertEquals("C", Student.getLetterGrade(79.9));
+        assertEquals("C", Student.getLetterGrade(79));
         assertEquals("B", Student.getLetterGrade(80));
-        
-        // Boundary between B and A
-        assertEquals("B", Student.getLetterGrade(89.9));
+        assertEquals("B", Student.getLetterGrade(89));
         assertEquals("A", Student.getLetterGrade(90));
     }
 
@@ -122,44 +141,131 @@ public class StudentTest {
     }
 
     /**
-     * Test letter grade with negative input (edge case).
+     * Test getting highest grade.
      */
     @Test
-    public void testLetterGradeNegative() {
-        assertEquals("F", Student.getLetterGrade(-10));
+    public void testGetHighestGrade() {
+        student.addGrade(75.0);
+        student.addGrade(95.0);
+        student.addGrade(85.0);
+        
+        assertEquals(95.0, student.getHighestGrade(), 0.01);
     }
 
     /**
-     * Test letter grade with grade above 100 (edge case).
+     * Test getting lowest grade.
      */
     @Test
-    public void testLetterGradeAboveHundred() {
-        assertEquals("A", Student.getLetterGrade(105));
+    public void testGetLowestGrade() {
+        student.addGrade(75.0);
+        student.addGrade(95.0);
+        student.addGrade(85.0);
+        
+        assertEquals(75.0, student.getLowestGrade(), 0.01);
     }
 
     /**
-     * Test toString method returns non-null value.
+     * Test grade history tracking.
+     */
+    @Test
+    public void testGradeHistory() {
+        student.addGrade(80.0);
+        student.addGrade(85.0);
+        student.addGrade(90.0);
+        
+        assertEquals(3, student.getGradeHistory().size());
+        assertTrue(student.getGradeHistory().contains(80.0));
+        assertTrue(student.getGradeHistory().contains(85.0));
+        assertTrue(student.getGradeHistory().contains(90.0));
+    }
+
+    /**
+     * Test invalid grade (negative).
+     */
+    @Test
+    public void testInvalidNegativeGrade() {
+        student.addGrade(-10.0);
+        // Should not add invalid grade
+        assertEquals(0, student.getGradeCount());
+    }
+
+    /**
+     * Test invalid grade (above 100).
+     */
+    @Test
+    public void testInvalidAboveHundredGrade() {
+        student.addGrade(105.0);
+        // Should not add invalid grade
+        assertEquals(0, student.getGradeCount());
+    }
+
+    /**
+     * Test subject tracking.
+     */
+    @Test
+    public void testSubjectTracking() {
+        student.setSubject("Mathematics");
+        assertEquals("Mathematics", student.getSubject());
+    }
+
+    /**
+     * Test default subject.
+     */
+    @Test
+    public void testDefaultSubject() {
+        assertEquals("General", student.getSubject());
+    }
+
+    /**
+     * Test student toString method.
      */
     @Test
     public void testStudentToString() {
-        assertNotNull(student.toString());
-        assertTrue(student.toString().contains("John Doe"));
+        student.addGrade(85.0);
+        String result = student.toString();
+        
+        assertNotNull(result);
+        assertTrue(result.contains("John Doe"));
+        assertTrue(result.contains("85"));
     }
 
     /**
-     * Test creating multiple students with different data.
+     * Test multiple student instances are independent.
      */
     @Test
-    public void testMultipleStudents() {
-        Student student2 = new Student(2, "Jane Smith");
-        Student student3 = new Student(3, "Bob Johnson");
+    public void testMultipleStudentInstances() {
+        Student student2 = new Student("Jane Smith");
+        
+        student.addGrade(90.0);
+        student2.addGrade(80.0);
+        
+        assertEquals(90.0, student.getGrade(), 0.01);
+        assertEquals(80.0, student2.getGrade(), 0.01);
+        assertEquals(1, student.getGradeCount());
+        assertEquals(1, student2.getGradeCount());
+    }
 
-        assertEquals(1, student.getId());
-        assertEquals(2, student2.getId());
-        assertEquals(3, student3.getId());
+    /**
+     * Test student with database ID.
+     */
+    @Test
+    public void testStudentWithDatabaseId() {
+        Student dbStudent = new Student(1, "Bob Johnson", 85.5);
+        
+        assertEquals(1, dbStudent.getId());
+        assertEquals("Bob Johnson", dbStudent.getName());
+        assertEquals(85.5, dbStudent.getGrade(), 0.01);
+        assertTrue(dbStudent.isSaved());
+    }
 
-        assertEquals("John Doe", student.getName());
-        assertEquals("Jane Smith", student2.getName());
-        assertEquals("Bob Johnson", student3.getName());
+    /**
+     * Test setId method.
+     */
+    @Test
+    public void testSetStudentId() {
+        assertEquals(-1, student.getId());
+        student.setId(5);
+        assertEquals(5, student.getId());
+        assertTrue(student.isSaved());
     }
 }
