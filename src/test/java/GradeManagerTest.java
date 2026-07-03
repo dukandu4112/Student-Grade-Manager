@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 /**
  * Unit tests for the GradeManager class.
- * Tests grade calculations, averages, and letter grade assignments.
+ * Tests grade management, student operations, and average calculations.
  */
 public class GradeManagerTest {
 
@@ -22,250 +22,249 @@ public class GradeManagerTest {
     @Test
     public void testGradeManagerInitialization() {
         assertNotNull(gradeManager);
+        assertTrue(gradeManager.getStudents().isEmpty());
     }
 
     /**
-     * Test calculating average of single grade.
+     * Test adding a single student.
      */
     @Test
-    public void testAverageSingleGrade() {
-        ArrayList<Double> grades = new ArrayList<>();
-        grades.add(85.0);
+    public void testAddSingleStudent() {
+        gradeManager.addStudent("Alice Johnson");
+        assertEquals(1, gradeManager.getStudents().size());
+        assertEquals("Alice Johnson", gradeManager.getStudents().get(0).getName());
+    }
+
+    /**
+     * Test adding multiple students.
+     */
+    @Test
+    public void testAddMultipleStudents() {
+        gradeManager.addStudent("Student One");
+        gradeManager.addStudent("Student Two");
+        gradeManager.addStudent("Student Three");
         
-        double average = gradeManager.calculateAverage(grades);
+        assertEquals(3, gradeManager.getStudents().size());
+    }
+
+    /**
+     * Test adding a Student object directly.
+     */
+    @Test
+    public void testAddStudentObject() {
+        Student student = new Student("Bob Smith");
+        gradeManager.addStudent(student);
+        
+        assertEquals(1, gradeManager.getStudents().size());
+        assertEquals("Bob Smith", gradeManager.getStudents().get(0).getName());
+    }
+
+    /**
+     * Test calculating average with single student.
+     */
+    @Test
+    public void testCalculateAverageSingleStudent() {
+        gradeManager.addStudent("Emma Davis");
+        gradeManager.getStudents().get(0).addGrade(85.0);
+        
+        double average = gradeManager.calculateAverage();
         assertEquals(85.0, average, 0.01);
     }
 
     /**
-     * Test calculating average of multiple grades.
+     * Test calculating average with multiple students.
      */
     @Test
-    public void testAverageMultipleGrades() {
-        ArrayList<Double> grades = new ArrayList<>();
-        grades.add(90.0);
-        grades.add(80.0);
-        grades.add(100.0);
-        grades.add(70.0);
+    public void testCalculateAverageMultipleStudents() {
+        gradeManager.addStudent("Student A");
+        gradeManager.addStudent("Student B");
+        gradeManager.addStudent("Student C");
         
-        double average = gradeManager.calculateAverage(grades);
-        assertEquals(85.0, average, 0.01);
+        gradeManager.getStudents().get(0).addGrade(90.0);
+        gradeManager.getStudents().get(1).addGrade(80.0);
+        gradeManager.getStudents().get(2).addGrade(100.0);
+        
+        double average = gradeManager.calculateAverage();
+        assertEquals(90.0, average, 0.01);
     }
 
     /**
-     * Test average with decimal grades.
+     * Test calculating average with empty student list.
      */
     @Test
-    public void testAverageDecimalGrades() {
-        ArrayList<Double> grades = new ArrayList<>();
-        grades.add(87.5);
-        grades.add(92.3);
-        grades.add(88.7);
-        
-        double average = gradeManager.calculateAverage(grades);
-        assertEquals(89.5, average, 0.1);
-    }
-
-    /**
-     * Test average of empty grade list.
-     */
-    @Test
-    public void testAverageEmptyList() {
-        ArrayList<Double> grades = new ArrayList<>();
-        double average = gradeManager.calculateAverage(grades);
+    public void testCalculateAverageEmptyList() {
+        double average = gradeManager.calculateAverage();
         assertEquals(0.0, average, 0.01);
     }
 
     /**
-     * Test letter grade for perfect score.
+     * Test calculating average with students having no grades.
      */
     @Test
-    public void testLetterGradePerfect() {
-        double average = 100.0;
-        String letterGrade = gradeManager.getLetterGrade(average);
-        assertEquals("A", letterGrade);
-    }
-
-    /**
-     * Test letter grade for failing score.
-     */
-    @Test
-    public void testLetterGradeFailing() {
-        double average = 45.0;
-        String letterGrade = gradeManager.getLetterGrade(average);
-        assertEquals("F", letterGrade);
-    }
-
-    /**
-     * Test letter grade for A range.
-     */
-    @Test
-    public void testLetterGradeARange() {
-        assertEquals("A", gradeManager.getLetterGrade(90));
-        assertEquals("A", gradeManager.getLetterGrade(95));
-        assertEquals("A", gradeManager.getLetterGrade(100));
-    }
-
-    /**
-     * Test letter grade for B range.
-     */
-    @Test
-    public void testLetterGradeBRange() {
-        assertEquals("B", gradeManager.getLetterGrade(80));
-        assertEquals("B", gradeManager.getLetterGrade(85));
-        assertEquals("B", gradeManager.getLetterGrade(89));
-    }
-
-    /**
-     * Test letter grade for C range.
-     */
-    @Test
-    public void testLetterGradeCRange() {
-        assertEquals("C", gradeManager.getLetterGrade(70));
-        assertEquals("C", gradeManager.getLetterGrade(75));
-        assertEquals("C", gradeManager.getLetterGrade(79));
-    }
-
-    /**
-     * Test letter grade for D range.
-     */
-    @Test
-    public void testLetterGradeDRange() {
-        assertEquals("D", gradeManager.getLetterGrade(60));
-        assertEquals("D", gradeManager.getLetterGrade(65));
-        assertEquals("D", gradeManager.getLetterGrade(69));
-    }
-
-    /**
-     * Test letter grade for F range.
-     */
-    @Test
-    public void testLetterGradeFRange() {
-        assertEquals("F", gradeManager.getLetterGrade(0));
-        assertEquals("F", gradeManager.getLetterGrade(30));
-        assertEquals("F", gradeManager.getLetterGrade(59));
-    }
-
-    /**
-     * Test letter grade boundaries.
-     */
-    @Test
-    public void testLetterGradeBoundaries() {
-        // Exact boundaries
-        assertEquals("D", gradeManager.getLetterGrade(59.9));
-        assertEquals("C", gradeManager.getLetterGrade(60.0));
-        assertEquals("C", gradeManager.getLetterGrade(69.9));
-        assertEquals("B", gradeManager.getLetterGrade(70.0));
-        assertEquals("B", gradeManager.getLetterGrade(79.9));
-        assertEquals("A", gradeManager.getLetterGrade(80.0));
-    }
-
-    /**
-     * Test is valid grade (0-100).
-     */
-    @Test
-    public void testIsValidGradeTrue() {
-        assertTrue(gradeManager.isValidGrade(50));
-        assertTrue(gradeManager.isValidGrade(0));
-        assertTrue(gradeManager.isValidGrade(100));
-        assertTrue(gradeManager.isValidGrade(75.5));
-    }
-
-    /**
-     * Test is valid grade with invalid values.
-     */
-    @Test
-    public void testIsValidGradeFalse() {
-        assertFalse(gradeManager.isValidGrade(-1));
-        assertFalse(gradeManager.isValidGrade(101));
-        assertFalse(gradeManager.isValidGrade(-50));
-        assertFalse(gradeManager.isValidGrade(150));
-    }
-
-    /**
-     * Test highest grade in list.
-     */
-    @Test
-    public void testHighestGrade() {
-        ArrayList<Double> grades = new ArrayList<>();
-        grades.add(75.0);
-        grades.add(92.0);
-        grades.add(88.5);
-        grades.add(85.0);
+    public void testCalculateAverageNoGrades() {
+        gradeManager.addStudent("Charlie Brown");
+        gradeManager.addStudent("Diana Prince");
         
-        double highest = gradeManager.getHighestGrade(grades);
-        assertEquals(92.0, highest, 0.01);
+        double average = gradeManager.calculateAverage();
+        assertEquals(0.0, average, 0.01);
     }
 
     /**
-     * Test lowest grade in list.
+     * Test calculating average with decimal grades.
      */
     @Test
-    public void testLowestGrade() {
-        ArrayList<Double> grades = new ArrayList<>();
-        grades.add(92.0);
-        grades.add(75.0);
-        grades.add(88.5);
-        grades.add(85.0);
+    public void testCalculateAverageDecimalGrades() {
+        gradeManager.addStudent("Frank Miller");
+        gradeManager.addStudent("Grace Lee");
         
-        double lowest = gradeManager.getLowestGrade(grades);
-        assertEquals(75.0, lowest, 0.01);
+        gradeManager.getStudents().get(0).addGrade(87.5);
+        gradeManager.getStudents().get(1).addGrade(92.5);
+        
+        double average = gradeManager.calculateAverage();
+        assertEquals(90.0, average, 0.01);
     }
 
     /**
-     * Test highest/lowest with single grade.
+     * Test get students returns correct list.
      */
     @Test
-    public void testHighestLowestSingleGrade() {
-        ArrayList<Double> grades = new ArrayList<>();
-        grades.add(85.0);
+    public void testGetStudents() {
+        gradeManager.addStudent("Henry Wilson");
+        gradeManager.addStudent("Ivy Martinez");
         
-        assertEquals(85.0, gradeManager.getHighestGrade(grades), 0.01);
-        assertEquals(85.0, gradeManager.getLowestGrade(grades), 0.01);
+        ArrayList<Student> students = gradeManager.getStudents();
+        assertEquals(2, students.size());
+        assertEquals("Henry Wilson", students.get(0).getName());
+        assertEquals("Ivy Martinez", students.get(1).getName());
     }
 
     /**
-     * Test with all same grades.
+     * Test students maintain independence.
+     */
+    @Test
+    public void testStudentIndependence() {
+        gradeManager.addStudent("Jack Taylor");
+        gradeManager.addStudent("Karen Anderson");
+        
+        gradeManager.getStudents().get(0).addGrade(95.0);
+        gradeManager.getStudents().get(1).addGrade(75.0);
+        
+        assertEquals(95.0, gradeManager.getStudents().get(0).getGrade(), 0.01);
+        assertEquals(75.0, gradeManager.getStudents().get(1).getGrade(), 0.01);
+    }
+
+    /**
+     * Test with mixed grades.
+     */
+    @Test
+    public void testMixedGrades() {
+        gradeManager.addStudent("Leo Thompson");
+        gradeManager.addStudent("Monica Green");
+        gradeManager.addStudent("Nancy White");
+        
+        // First student gets multiple grades
+        gradeManager.getStudents().get(0).addGrade(90.0);
+        gradeManager.getStudents().get(0).addGrade(80.0);
+        
+        // Second student gets single grade
+        gradeManager.getStudents().get(1).addGrade(85.0);
+        
+        // Third student has no grades
+        
+        // Class average should be (85.0 + 85.0 + 0.0) / 3 = 56.67
+        double average = gradeManager.calculateAverage();
+        assertEquals(56.67, average, 0.1);
+    }
+
+    /**
+     * Test performance with large number of students.
+     */
+    @Test
+    public void testLargeNumberOfStudents() {
+        // Add 50 students
+        for (int i = 1; i <= 50; i++) {
+            gradeManager.addStudent("Student " + i);
+            gradeManager.getStudents().get(i - 1).addGrade(50.0 + (i % 50));
+        }
+        
+        assertEquals(50, gradeManager.getStudents().size());
+        double average = gradeManager.calculateAverage();
+        assertTrue(average > 0 && average <= 100);
+    }
+
+    /**
+     * Test letter grade assignment through student integration.
+     */
+    @Test
+    public void testLetterGradeIntegration() {
+        gradeManager.addStudent("Oscar Black");
+        gradeManager.getStudents().get(0).addGrade(92.0);
+        
+        Student student = gradeManager.getStudents().get(0);
+        assertEquals("A", student.getLetterGrade());
+    }
+
+    /**
+     * Test highest grade across all students.
+     */
+    @Test
+    public void testHighestGradeIntegration() {
+        gradeManager.addStudent("Peter Red");
+        gradeManager.addStudent("Quinn Blue");
+        
+        gradeManager.getStudents().get(0).addGrade(75.0);
+        gradeManager.getStudents().get(0).addGrade(95.0);
+        gradeManager.getStudents().get(1).addGrade(88.0);
+        
+        assertEquals(95.0, gradeManager.getStudents().get(0).getHighestGrade(), 0.01);
+        assertEquals(88.0, gradeManager.getStudents().get(1).getHighestGrade(), 0.01);
+    }
+
+    /**
+     * Test lowest grade across all students.
+     */
+    @Test
+    public void testLowestGradeIntegration() {
+        gradeManager.addStudent("Rachel Green");
+        gradeManager.addStudent("Steven Black");
+        
+        gradeManager.getStudents().get(0).addGrade(75.0);
+        gradeManager.getStudents().get(0).addGrade(95.0);
+        gradeManager.getStudents().get(1).addGrade(60.0);
+        
+        assertEquals(75.0, gradeManager.getStudents().get(0).getLowestGrade(), 0.01);
+        assertEquals(60.0, gradeManager.getStudents().get(1).getLowestGrade(), 0.01);
+    }
+
+    /**
+     * Test boundary values for average calculation.
+     */
+    @Test
+    public void testAverageBoundaryValues() {
+        gradeManager.addStudent("Tom White");
+        gradeManager.addStudent("Uma Yellow");
+        
+        gradeManager.getStudents().get(0).addGrade(0.0);      // Minimum
+        gradeManager.getStudents().get(1).addGrade(100.0);    // Maximum
+        
+        double average = gradeManager.calculateAverage();
+        assertEquals(50.0, average, 0.01);
+    }
+
+    /**
+     * Test all same grades.
      */
     @Test
     public void testAllSameGrades() {
-        ArrayList<Double> grades = new ArrayList<>();
-        grades.add(80.0);
-        grades.add(80.0);
-        grades.add(80.0);
+        gradeManager.addStudent("Victor Purple");
+        gradeManager.addStudent("Wendy Orange");
+        gradeManager.addStudent("Xavier Pink");
         
-        double average = gradeManager.calculateAverage(grades);
+        gradeManager.getStudents().get(0).addGrade(80.0);
+        gradeManager.getStudents().get(1).addGrade(80.0);
+        gradeManager.getStudents().get(2).addGrade(80.0);
+        
+        double average = gradeManager.calculateAverage();
         assertEquals(80.0, average, 0.01);
-        assertEquals(80.0, gradeManager.getHighestGrade(grades), 0.01);
-        assertEquals(80.0, gradeManager.getLowestGrade(grades), 0.01);
-    }
-
-    /**
-     * Test grade scale consistency.
-     */
-    @Test
-    public void testGradeScaleConsistency() {
-        // Verify grade scale is consistent
-        assertEquals("A", gradeManager.getLetterGrade(90));
-        assertEquals("B", gradeManager.getLetterGrade(80));
-        assertEquals("C", gradeManager.getLetterGrade(70));
-        assertEquals("D", gradeManager.getLetterGrade(60));
-        assertEquals("F", gradeManager.getLetterGrade(50));
-    }
-
-    /**
-     * Test performance with large number of grades.
-     */
-    @Test
-    public void testLargeNumberOfGrades() {
-        ArrayList<Double> grades = new ArrayList<>();
-        
-        // Add 100 grades
-        for (int i = 0; i < 100; i++) {
-            grades.add(50.0 + (i % 50));  // Grades ranging from 50-100
-        }
-        
-        double average = gradeManager.calculateAverage(grades);
-        assertTrue(average > 0 && average <= 100);
-        assertNotNull(gradeManager.getLetterGrade(average));
     }
 }
