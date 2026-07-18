@@ -38,13 +38,7 @@ public class Main {
                     }
                 }
 
-                case 3 -> {
-                    if (manager.getStudents().isEmpty()) {
-                        System.out.println("No students available.");
-                    } else {
-                        System.out.println("Average grade: " + manager.calculateAverage());
-                    }
-                }
+                case 3 -> manager.displayAverage();
 
                 case 4 -> manager.displayAllStudents();
 
