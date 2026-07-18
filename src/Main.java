@@ -90,24 +90,7 @@ public class Main {
                 }
 
                 case 8 -> manager.displayHighestStudent();
-                case 9 -> {
-                    if (manager.getStudents().isEmpty()) {
-                        System.out.println("No students available.");
-                    } else {
-                        Student lowest = manager.getStudents().get(0);
-
-                        for (Student student : manager.getStudents()) {
-                            if (student.getGrade() < lowest.getGrade()) {
-                                lowest = student;
-                            }
-                        }
-
-                        System.out.println("\nStudent with Lowest Grade:");
-                        System.out.println("Name: " + lowest.getName());
-                        System.out.println("Grade: " + lowest.getGrade());
-                        System.out.println("Letter Grade: " + lowest.getLetterGrade());
-                    }
-                }
+                case 9 -> manager.displayLowestStudent();
 
                 case 10 -> {
                     manager.getStudents().sort(Comparator.comparing(Student::getName));
