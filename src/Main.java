@@ -89,25 +89,7 @@ public class Main {
                     }
                 }
 
-                case 8 -> {
-                    if (manager.getStudents().isEmpty()) {
-                        System.out.println("No students available.");
-                    } else {
-                        Student highest = manager.getStudents().get(0);
-
-                        for (Student student : manager.getStudents()) {
-                            if (student.getGrade() > highest.getGrade()) {
-                                highest = student;
-                            }
-                        }
-
-                        System.out.println("\nStudent with Highest Grade:");
-                        System.out.println("Name: " + highest.getName());
-                        System.out.println("Grade: " + highest.getGrade());
-                        System.out.println("Letter Grade: " + highest.getLetterGrade());
-                    }
-                }
-
+                case 8 -> manager.displayHighestStudent();
                 case 9 -> {
                     if (manager.getStudents().isEmpty()) {
                         System.out.println("No students available.");
