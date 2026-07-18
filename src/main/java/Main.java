@@ -75,20 +75,11 @@ public class Main {
                 }
 
                 case 7 -> {
-                    System.out.print("Enter student name to search: ");
-                    String searchName = input.nextLine();
+    System.out.print("Enter student name to search: ");
+    String searchName = input.nextLine();
 
-                    boolean found = false;
-
-                    for (Student student : manager.getStudents()) {
-                        if (student.getName().equalsIgnoreCase(searchName)) {
-                            System.out.println("\nStudent Found:");
-                            System.out.println("Name: " + student.getName());
-                            System.out.println("Grade: " + student.getGrade());
-                            System.out.println("Letter Grade: " + student.getLetterGrade());
-                            found = true;
-                        }
-                    }
+    manager.searchStudent(searchName);
+}
 
                     if (!found) {
                         System.out.println("Student not found.");
