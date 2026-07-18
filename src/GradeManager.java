@@ -32,7 +32,7 @@ public class GradeManager {
 
         return total / students.size();
     }
-    public void displayAllStudents() {
+ public void displayAllStudents() {
     if (students.isEmpty()) {
         System.out.println("No students available.");
     } else {
@@ -46,5 +46,13 @@ public class GradeManager {
                     + " - Letter Grade: " + student.getLetterGrade());
         }
     }
-  } 
+}
+
+public void displayAverage() {
+    if (students.isEmpty()) {
+        System.out.println("No students available.");
+    } else {
+        System.out.println("Average grade: " + calculateAverage());
+    }
+}
 }
