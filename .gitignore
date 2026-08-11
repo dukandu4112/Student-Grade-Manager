@@ -47,3 +47,5 @@ students.db
 *.pid
 
 # End of file
+*.sqlite
+.idea/
