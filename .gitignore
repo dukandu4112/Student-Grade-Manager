@@ -49,3 +49,4 @@ students.db
 # End of file
 *.sqlite
 .idea/
+students.db
