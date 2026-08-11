@@ -75,15 +75,10 @@ public class Main {
                 }
 
                 case 7 -> {
-    System.out.print("Enter student name to search: ");
-    String searchName = input.nextLine();
+                    System.out.print("Enter student name to search: ");
+                    String searchName = input.nextLine();
 
-    manager.searchStudent(searchName);
-}
-
-                    if (!found) {
-                        System.out.println("Student not found.");
-                    }
+                    manager.searchStudent(searchName);
                 }
 
                 case 8 -> {
