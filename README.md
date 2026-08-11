@@ -1,3 +1,4 @@
+[![Build](https://github.com/dukandu4112/Student-Grade-Manager/actions/workflows/maven.yml/badge.svg)](https://github.com/dukandu4112/Student-Grade-Manager/actions/workflows/maven.yml)
 # Student Grade Manager
 
 A comprehensive Java application for managing student grades with persistent SQLite database storage. This application allows educators and administrators to efficiently track student information, record grades, calculate averages, and manage academic performance data.
@@ -236,6 +237,14 @@ Potential features for future versions:
 - [ ] **Email Notifications** - Automated grade notifications
 - [ ] **Multi-class Support** - Manage multiple class sections
 - [ ] **Unit Tests** - Comprehensive test suite with JUnit
+
+## Run tests
+
+Run the unit tests locally with:
+
+```bash
+mvn -B -DskipTests=false test
+```
 
 ## 📝 License
 
