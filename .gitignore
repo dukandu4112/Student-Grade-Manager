@@ -49,3 +49,6 @@ students.db
 # End of file
 *.sqlite
 .idea/
+backup-Student-Grade-Manager.git
+dependency-reduced-pom.xml
+target/
