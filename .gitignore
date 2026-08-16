@@ -49,3 +49,25 @@ students.db
 # End of file
 *.sqlite
 .idea/
+students.db
+
+# Maven / build
+/target/
+!.mvn/wrapper/maven-wrapper.jar
+
+# Local DBs
+*.db
+students.db
+
+# IDEs
+/.idea/
+/.vscode/
+*.iml
+
+# OS / editor
+.DS_Store
+*.log
+
+# backup and generated mirrors
+backup-Student-Grade-Manager.git/
+cleaned/
