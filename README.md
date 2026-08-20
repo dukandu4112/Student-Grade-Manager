@@ -1,273 +1,153 @@
-[![Build](https://github.com/dukandu4112/Student-Grade-Manager/actions/workflows/maven.yml/badge.svg)](https://github.com/dukandu4112/Student-Grade-Manager/actions/workflows/maven.yml)
 # Student Grade Manager
 
-A comprehensive Java application for managing student grades with persistent SQLite database storage. This application allows educators and administrators to efficiently track student information, record grades, calculate averages, and manage academic performance data.
+[![Java CI - Maven](https://github.com/dukandu4112/Student-Grade-Manager/actions/workflows/maven.yml/badge.svg)](https://github.com/dukandu4112/Student-Grade-Manager/actions/workflows/maven.yml)
 
-## 📋 Features
+A portfolio-ready Java 17 command-line application for managing students and academic grades with persistent SQLite storage, reliable validation, analytics, CSV export, automated tests, and GitHub Actions CI.
 
-- **Student Management**
-  - Add new students to the database
-  - Search for existing students
-  - Delete students and their associated grade records
-  - View complete student roster
+## Features
 
-- **Grade Tracking**
-  - Record multiple grades per student
-  - Maintain complete grade history for each student
-  - View all grades for a specific student
-  - Automatic average calculation
+- Add, rename, search, list, and delete students.
+- Record multiple grades per student and organize them by subject.
+- View complete grade history for an individual student.
+- Edit or delete individual grade records.
+- Calculate per-student and class-wide averages.
+- Convert numeric averages to A/B/C/D/F letter grades.
+- Show each student's highest and lowest recorded grade.
+- Sort the roster by name, highest average, or lowest average.
+- Export the complete student/grade dataset to CSV.
+- Persist data automatically in SQLite with foreign-key cascading deletes.
+- Validate names, numeric input, grade ranges, IDs, and destructive actions.
+- Run automated JUnit 5 tests in GitHub Actions on every push and pull request.
 
-- **Academic Analytics**
-  - Calculate individual student averages
-  - Generate class-wide average statistics
-  - Automatic letter grade assignment (A, B, C, D, F)
-  - View highest and lowest grades per student
+## Requirements
 
-- **Data Persistence**
-  - SQLite database for reliable data storage
-  - Automatic database initialization
-  - Persistent storage across sessions
-  - No data loss on application restart
+- Java 17 or newer
+- Maven 3.6+
 
-- **User-Friendly Interface**
-  - Interactive command-line menu system
-  - Input validation and error handling
-  - Confirmation prompts for destructive operations
-  - Clear, formatted output
+SQLite JDBC and JUnit are installed automatically by Maven.
 
-## 🛠️ Requirements
+## Build
 
-- **Java 17** or higher
-- **Maven 3.6.0** or higher
-- **SQLite JDBC 3.44.0.0** (automatically installed via Maven)
-
-## 📥 Installation
-
-### 1. Clone the Repository
 ```bash
 git clone https://github.com/dukandu4112/Student-Grade-Manager.git
 cd Student-Grade-Manager
+mvn clean verify
 ```
 
-### 2. Build the Project
+Create the executable JAR:
+
 ```bash
-mvn clean install
+mvn clean package
 ```
 
-This command will:
-- Download all dependencies (including SQLite JDBC)
-- Compile all Java source files
-- Run any tests (if available)
-- Create a JAR file with all dependencies included
+Run it:
 
-### 3. Verify the Build
-```bash
-ls -l target/student-grade-manager.jar
-```
-
-You should see the JAR file listed in the `target/` directory.
-
-## 🚀 Usage
-
-### Running the Application
 ```bash
 java -jar target/student-grade-manager.jar
 ```
 
-### Main Menu Options
+The application creates `students.db` in the working directory on first run. That local database is intentionally excluded from Git.
 
-```
-===== Student Grade Manager =====
-1. Add student           - Register a new student in the system
-2. Add grade             - Record a grade for a student
-3. Show average grade    - View individual or class average
-4. Show all students     - Display complete student roster
-5. Edit student grade    - Add a new grade (maintains history)
-6. Delete student        - Remove a student from the system
-7. Search student        - Find and view student details
-8. Exit                  - Close the application
-```
+## Menu
 
-### Example Workflow
-
-```bash
-# Start the application
-java -jar target/student-grade-manager.jar
-
-# 1. Add students
-Enter your choice: 1
-Enter student name: Alice Johnson
-✓ Student 'Alice Johnson' added successfully.
-
-# 2. Add grades
-Enter your choice: 2
-[List of students displayed]
-Enter student number: 1
-Enter grade (0-100): 95
-Enter subject (optional, press Enter for 'General'): Mathematics
-✓ Grade 95 added successfully for Alice Johnson.
-
-# 3. View grades
-Enter your choice: 3
-Enter student number (or 0 for class average): 1
-===== Student Average =====
-Name: Alice Johnson
-Average Grade: 95.00
-Letter Grade: A
-
-# 4. Exit
-Enter your choice: 8
-Goodbye!
+```text
+1. Add student
+2. Add grade
+3. View student details and grade history
+4. Show all students
+5. Edit grade
+6. Delete grade
+7. Rename student
+8. Delete student
+9. Search student
+10. Show class average
+11. Sort by highest average
+12. Sort by lowest average
+13. Export CSV
+14. Exit
 ```
 
-## 📁 Project Structure
+## Project Structure
 
-```
+```text
 Student-Grade-Manager/
-├── src/main/java/
-│   ├── Main.java              # CLI interface and menu system
-│   ├── Student.java           # Student data model with database support
-│   ├── DatabaseManager.java   # Database operations and queries
-│   ├── GradeManager.java       # Business logic for grade calculations
-│   └── StudentDisplay.java    # Formatting and display utilities
-├── target/
-│   ├── classes/               # Compiled Java classes
-│   └── student-grade-manager.jar  # Executable JAR file
-├── pom.xml                    # Maven build configuration
-├── README.md                  # This file
-└── students.db                # SQLite database (created on first run)
-
+├── .github/workflows/maven.yml
+├── docs/
+│   └── ARCHITECTURE.md
+├── src/
+│   ├── main/java/com/grademanager/
+│   │   ├── Main.java
+│   │   ├── ConsoleApp.java
+│   │   ├── DatabaseManager.java
+│   │   ├── GradeManager.java
+│   │   ├── Student.java
+│   │   ├── GradeRecord.java
+│   │   ├── GradeScale.java
+│   │   └── CsvService.java
+│   └── test/java/com/grademanager/
+│       ├── DatabaseManagerTest.java
+│       ├── GradeScaleTest.java
+│       ├── GradeRecordTest.java
+│       └── StudentTest.java
+├── .gitignore
+├── CONTRIBUTING.md
+├── LICENSE
+├── README.md
+└── pom.xml
 ```
 
-## 🗄️ Database Schema
+## Database Schema
 
-The application automatically creates an SQLite database with the following tables:
-
-### Students Table
 ```sql
 CREATE TABLE students (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL UNIQUE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    name TEXT NOT NULL UNIQUE COLLATE NOCASE,
+    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
-```
 
-### Grades Table
-```sql
 CREATE TABLE grades (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     student_id INTEGER NOT NULL,
-    grade REAL NOT NULL,
-    subject TEXT DEFAULT 'General',
-    recorded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    grade REAL NOT NULL CHECK (grade >= 0 AND grade <= 100),
+    subject TEXT NOT NULL DEFAULT 'General',
+    recorded_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE
 );
 ```
 
-## 🔧 Building and Customization
+## Grade Scale
 
-### Update Java Version
-Edit `pom.xml` and change the `<maven.compiler.source>` and `<maven.compiler.target>` properties:
-```xml
-<properties>
-    <maven.compiler.source>17</maven.compiler.source>
-    <maven.compiler.target>17</maven.compiler.target>
-</properties>
-```
+| Range | Letter |
+|---:|:---:|
+| 90-100 | A |
+| 80-89.99 | B |
+| 70-79.99 | C |
+| 60-69.99 | D |
+| 0-59.99 | F |
 
-### Rebuild After Changes
-```bash
-mvn clean install
-```
-
-### Run with Different Main Class
-If you add a new main class:
-```bash
-mvn clean package
-java -cp target/student-grade-manager.jar com.grademanager.NewMainClass
-```
-
-## 📊 Grade Scale Reference
-
-The application uses the following letter grade scale:
-
-| Grade Range | Letter Grade |
-|-------------|--------------|
-| 90 - 100   | A            |
-| 80 - 89    | B            |
-| 70 - 79    | C            |
-| 60 - 69    | D            |
-| 0 - 59     | F            |
-
-## 🐛 Troubleshooting
-
-### Issue: "No such file or directory: pom.xml"
-**Solution:** Make sure you're in the project root directory
-```bash
-cd Student-Grade-Manager
-```
-
-### Issue: "switch rules are not supported in -source 11"
-**Solution:** Update Java version in `pom.xml` to 17 or higher and rebuild
-```bash
-mvn clean install
-```
-
-### Issue: "JAR will be empty - no content was marked for inclusion"
-**Solution:** Ensure Java files are in `src/main/java/` directory
-```bash
-mkdir -p src/main/java
-mv src/*.java src/main/java/
-```
-
-### Issue: Database file not created
-**Solution:** The database is automatically created in the working directory on first run. Ensure you have write permissions in the directory where you run the JAR.
-
-## 🚀 Future Enhancements
-
-Potential features for future versions:
-
-- [ ] **GUI Interface** - JavaFX graphical user interface
-- [ ] **CSV Export** - Export student data to CSV files
-- [ ] **Statistics Dashboard** - Visual grade distribution charts
-- [ ] **Bulk Import** - Import students from CSV files
-- [ ] **Grade Weights** - Assign weights to different assignment types
-- [ ] **Attendance Tracking** - Track student attendance records
-- [ ] **Parent Portal** - Web interface for parents to view grades
-- [ ] **Email Notifications** - Automated grade notifications
-- [ ] **Multi-class Support** - Manage multiple class sections
-- [ ] **Unit Tests** - Comprehensive test suite with JUnit
-
-## Run tests
-
-Run the unit tests locally with:
+## Testing
 
 ```bash
-mvn -B -DskipTests=false test
+mvn test
 ```
 
-## 📝 License
+The test suite covers grade boundaries, input/model validation, SQLite CRUD operations, searching, averages, highest/lowest analytics, updates, cascading deletion, and duplicate-name handling.
 
-This project is part of a Computer Science portfolio. Feel free to use, modify, and distribute as needed for educational purposes.
+## Design Notes
 
-## 👨‍💻 Author
+The application separates responsibilities into model classes, a database access layer, business logic, console UI, and export service. SQL uses prepared statements, database foreign keys are enabled, generated runtime files are ignored, and the Maven Shade plugin creates one executable JAR without generating a tracked `dependency-reduced-pom.xml`.
 
-**dukandu4112** - Computer Science Student
+See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for more detail.
 
-## 🤝 Contributing
+## Version
 
-Contributions are welcome! Feel free to:
-- Report bugs or issues
-- Suggest new features
-- Submit pull requests with improvements
-- Improve documentation
-
-## 📞 Support
-
-For questions or issues, please open a GitHub issue in the repository.
-
----
-
-**Last Updated:** July 3, 2026  
 **Version:** 1.0.0  
-**Status:** ✅ Production Ready
+**Status:** Complete portfolio CLI release
+
+## License
+
+MIT License. See [LICENSE](LICENSE).
+
+## Author
+
+**dukandu4112** — Computer Science student and project author.
