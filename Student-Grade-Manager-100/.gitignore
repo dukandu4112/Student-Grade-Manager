@@ -1,0 +1,11 @@
+target/
+*.class
+*.jar
+students.db
+students.db-*
+student-grades.csv
+.idea/
+.vscode/
+*.iml
+.DS_Store
+dependency-reduced-pom.xml

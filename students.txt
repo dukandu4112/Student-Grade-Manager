@@ -1,3 +1,0 @@
-Daniel,95.0
-John,0.0
-Daniel,0.0
